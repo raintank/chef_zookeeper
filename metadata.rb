@@ -1,0 +1,10 @@
+name             'chef_zookeeper'
+maintainer       'Raintank, Inc.'
+maintainer_email 'cookbooks@raintank.io'
+license          'Apache 2.0'
+description      'Installs/Configures chef_zookeeper'
+long_description 'Installs/Configures chef_zookeeper'
+version          '0.1.0'
+
+depends 'chef_base', '~> 0.1.7'
+depends 'zookeeper', '~> 7.0.0'
