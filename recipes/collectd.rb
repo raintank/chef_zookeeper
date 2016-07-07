@@ -42,5 +42,7 @@ cookbook_file "/usr/share/collectd/plugins/zookeeper-collectd.py" do
   action :create  
 end
 
-node.set["collectd_personality"] = "zookeeper"
-include_recipe "chef_base::collectd"
+unless node['chef_kafka']['include_zookeeper']
+  node.set["collectd_personality"] = "zookeeper"
+  include_recipe "chef_base::collectd"
+end
