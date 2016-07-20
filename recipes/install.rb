@@ -17,6 +17,34 @@
 # limitations under the License.
 #
 
+# bit of a chicken and egg problem here, since we install zookeeper, then
+# kafka, and until we have all the kafkas and zookeepers we can't do this very 
+# well. Basically on initial deployment we'll need to run chef twice.
+
+kafkas = if Chef::Config[:solo]
+    node['chef_zookeepers']['kafkas']
+  else
+    search("node", node['chef_zookeeper']['kafka_search']).map { |c| c.hostname }.sort || node['chef_zookeeper']['kafkas']
+  end
+
+kafkas.each do |k|
+  k =~ /(\d+)/
+  kid = $1 || 1 # don't have more than one kafka server with no numbers in the
+		# hostname
+  node['zookeepers']['config']["server.#{kid}"] = "#{k}:2888:3888"
+end
+
+node['hostname'] =~ /(\d+)/
+myid = $1 || 1
+
+file "#{node['zookeeper']['config']['dataDir']}/myid" do
+  mode "0644"
+  owner "root"
+  group "root"
+  content myid
+  action :create
+end
+
 include_recipe "zookeeper::default"
 include_recipe "zookeeper::service"
 tag("zookeeper")
