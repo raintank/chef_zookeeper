@@ -31,7 +31,7 @@ kafkas.each do |k|
   k =~ /(\d+)/
   kid = $1 || 1 # don't have more than one kafka server with no numbers in the
 		# hostname
-  node['zookeepers']['config']["server.#{kid}"] = "#{k}:2888:3888"
+  node.default['zookeeper']['config']["server.#{kid}"] = "#{k}:2888:3888"
 end
 
 node['hostname'] =~ /(\d+)/
