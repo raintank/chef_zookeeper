@@ -35,7 +35,7 @@ kafkas.each do |k|
 end
 
 node['hostname'] =~ /(\d+)/
-myid = $1 || 1
+myid = $1 || "1"
 
 file "#{node['zookeeper']['config']['dataDir']}/myid" do
   mode "0644"
