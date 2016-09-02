@@ -37,6 +37,13 @@ end
 node['hostname'] =~ /(\d+)/
 myid = $1 || "1"
 
+directory node['zookeeper']['config']['dataDir'] do
+  mode "0755"
+  owner "root"
+  group "root"
+  action :create
+end
+
 file "#{node['zookeeper']['config']['dataDir']}/myid" do
   mode "0644"
   owner "root"
