@@ -22,7 +22,7 @@
 # well. Basically on initial deployment we'll need to run chef twice.
 
 kafkas = if Chef::Config[:solo]
-    node['chef_zookeepers']['kafkas']
+    node['chef_zookeeper']['kafkas']
   else
     search("node", node['chef_zookeeper']['kafka_search']).map { |c| c.hostname }.sort || node['chef_zookeeper']['kafkas']
   end
